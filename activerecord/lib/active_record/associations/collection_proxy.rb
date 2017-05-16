@@ -1091,9 +1091,8 @@ module ActiveRecord
       #   person.pets(true)  # fetches pets from the database
       #   # => [#<Pet id: 1, name: "Snoop", group: "dogs", person_id: 1>]
       def reload
-        @scope = nil
         proxy_association.reload
-        self
+        reset_scope
       end
 
       # Unloads the association. Returns +self+.
@@ -1113,9 +1112,13 @@ module ActiveRecord
       #   person.pets  # fetches pets from the database
       #   # => [#<Pet id: 1, name: "Snoop", group: "dogs", person_id: 1>]
       def reset
-        @scope = nil
         proxy_association.reset
         proxy_association.reset_scope
+        reset_scope
+      end
+
+      def reset_scope # :nodoc:
+        @scope = nil
         self
       end
 
